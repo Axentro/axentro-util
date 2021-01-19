@@ -4,18 +4,17 @@ require "big"
 require "crest"
 
 module Axentro::Util
-
   SCALE_DECIMAL = 8
 
   extend self
 
   def create_signed_send_transaction(from_address : String, from_public_key : String, wif : String, to_address : String, amount : String, fee : String = "0.0001", speed : String = "FAST")
-   from_private_key = __get_private_key_from_wif(wif)
+    from_private_key = __get_private_key_from_wif(wif)
     __create_signed_send_token_transaction(from_address, from_public_key, from_private_key, to_address, amount, fee, speed)
   end
 
   def post_transaction(transaction_json, url : String = "https://mainnet.axentro.io")
-    request = Crest::Request.new(:post, "#{url}/api/v1/transaction", headers: {"Content-Type" => "application/json"},form: transaction_json)
+    request = Crest::Request.new(:post, "#{url}/api/v1/transaction", headers: {"Content-Type" => "application/json"}, form: transaction_json)
     response = request.execute
     raise "status code was: #{response.status_code}" if response.status_code != 200
     json_response = JSON.parse(response.body)
@@ -29,14 +28,14 @@ module Axentro::Util
     timestamp = __timestamp
     scaled_amount = __scale_i64(amount)
     scaled_fee = __scale_i64(fee)
-    
+
     unsigned_transaction = %Q{{"id":"#{transaction_id}","action":"send","senders":[{"address":"#{from_address}","public_key":"#{from_public_key}","amount":#{scaled_amount},"fee":#{scaled_fee},"signature":"0"}],"recipients":[{"address":"#{to_address}","amount":#{scaled_amount}}],"message":"","token":"AXNT","prev_hash":"0","timestamp":#{timestamp},"scaled":1,"kind":"#{speed}","version":"V1"}}
-    
+
     payload_hash = __sha256(unsigned_transaction)
     signature = __sign(from_private_key, payload_hash)
-    signed_transaction = __to_signed(unsigned_transaction, signature) 
-   
-     %Q{{"transaction": #{signed_transaction}}}
+    signed_transaction = __to_signed(unsigned_transaction, signature)
+
+    %Q{{"transaction": #{signed_transaction}}}
   end
 
   def __create_id : String
@@ -64,7 +63,7 @@ module Axentro::Util
   end
 
   def __to_signed(unsigned_transaction, signature) : String
-   unsigned_transaction.gsub(%Q{"signature":"0"}, %Q{"signature":"#{signature}"})
+    unsigned_transaction.gsub(%Q{"signature":"0"}, %Q{"signature":"#{signature}"})
   end
 
   def __sha256(base : Bytes | String) : String
@@ -80,5 +79,4 @@ module Axentro::Util
   def __scale_i64(value : String) : Int64
     BigDecimal.new(value).scale_to(BigDecimal.new(1, SCALE_DECIMAL)).value.to_i64
   end
-
 end
