@@ -1,0 +1,15 @@
+name: axentro-util
+version: 0.1.0
+
+authors:
+  - your-name-here <your-email-here>
+
+crystal: 0.35.1
+
+dependencies:
+  monocypher:
+    github: axentro/monocypher.cr
+  crest:
+    github: mamantoha/crest
+    
+license: MIT
