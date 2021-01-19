@@ -1,0 +1,14 @@
+version: 2
+jobs:
+
+  tests:
+    docker:
+      - image: crystallang/crystal:0.35.1
+    steps:
+      - checkout
+      - run: |
+          apt-get update
+      - run: |
+          shards install
+          crystal spec
+          bin/ameba
