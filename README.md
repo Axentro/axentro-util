@@ -29,7 +29,7 @@ amount = "1"
 transaction = Axentro::Util.create_signed_send_transaction(from_address, from_public_key, wif, to_address, amount)
 
 # post the transaction to the desired server
-transaction_id = Axentro::Util.post_transaction(transaction, "http://localhost:3001")
+transaction_id = Axentro::Util.post_transaction(transaction, "https://testnet.axentro.io")
 ```
 
 ## Contributing
