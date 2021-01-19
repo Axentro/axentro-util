@@ -2,6 +2,9 @@
 
 A utility to create and post a signed transaction for sending AXNT tokens on [Axentro Blockchain](https://axentro.io)
 
+[![CircleCI](https://circleci.com/gh/Axentro/axentro-util.svg?style=svg)](https://circleci.com/gh/Axentro/axentro-util)
+
+
 ## Installation
 
 1. Add the dependency to your `shard.yml`:
