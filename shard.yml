@@ -11,5 +11,9 @@ dependencies:
     github: axentro/monocypher.cr
   crest:
     github: mamantoha/crest
-    
-license: MIT
+
+development_dependencies:
+  ameba:
+    github: veelenga/ameba
+
+    license: MIT
