@@ -1,6 +1,6 @@
 # axentro-util
 
-A utility to create and post a signed transaction for sending AXNT tokens
+A utility to create and post a signed transaction for sending AXNT tokens on [Axentro Blockchain](https://axentro.io)
 
 ## Installation
 
