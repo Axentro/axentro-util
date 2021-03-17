@@ -29,7 +29,21 @@ module Axentro::Util
     scaled_amount = __scale_i64(amount)
     scaled_fee = __scale_i64(fee)
 
-    unsigned_transaction = %Q{{"id":"#{transaction_id}","action":"send","senders":[{"address":"#{from_address}","public_key":"#{from_public_key}","amount":#{scaled_amount},"fee":#{scaled_fee},"signature":"0"}],"recipients":[{"address":"#{to_address}","amount":#{scaled_amount}}],"message":"","token":"AXNT","prev_hash":"0","timestamp":#{timestamp},"scaled":1,"kind":"#{speed}","version":"V1"}}
+    unsigned_transaction = %Q{
+      {
+        "id":"#{transaction_id}",
+        "action":"send",
+        "message":"",
+        "token":"AXNT",
+        "prev_hash":"0",
+        "timestamp":#{timestamp},
+        "scaled":1,
+        "kind":"#{speed}",
+        "version":"V1",
+        "senders":[{"address":"#{from_address}","public_key":"#{from_public_key}","amount":#{scaled_amount},"fee":#{scaled_fee},"signature":"0"}],
+        "recipients":[{"address":"#{to_address}","amount":#{scaled_amount}}]
+      }
+    }.gsub(/\s+/,"")
 
     payload_hash = __sha256(unsigned_transaction)
     signature = __sign(from_private_key, payload_hash)
