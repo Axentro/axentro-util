@@ -2,8 +2,7 @@
 
 A utility to create and post a signed transaction for sending AXNT tokens on [Axentro Blockchain](https://axentro.io)
 
-[![CircleCI](https://circleci.com/gh/Axentro/axentro-util.svg?style=svg)](https://circleci.com/gh/Axentro/axentro-util)
-
+[![Linux CI](https://github.com/Axentro/axentro-util/actions/workflows/linux-ci.yml/badge.svg)](https://github.com/Axentro/axentro-util/actions/workflows/linux-ci.yml)
 
 ## Installation
 
