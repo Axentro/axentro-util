@@ -1,10 +1,10 @@
 name: axentro-util
-version: 0.1.0
+version: 0.1.1
 
 authors:
-  - your-name-here <your-email-here>
+  - Kingsley <kingsley@axentro.io>
 
-crystal: 0.36.1
+crystal: 1.0.0
 
 dependencies:
   monocypher:
