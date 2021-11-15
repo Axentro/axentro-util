@@ -1,14 +1,16 @@
 name: axentro-util
-version: 0.1.1
+version: 0.1.2
 
 authors:
   - Kingsley <kingsley@axentro.io>
 
-crystal: 1.0.0
+crystal: 1.2.1
 
 dependencies:
   monocypher:
     github: axentro/monocypher.cr
+  ed25519-hd:
+    github: axentro/ed25519-hd   
   crest:
     github: mamantoha/crest
 

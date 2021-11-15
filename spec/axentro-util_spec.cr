@@ -22,4 +22,25 @@ describe Axentro::Util do
     recipient["address"].as_s.should eq(to_address)
     recipient["amount"].as_i.should eq(100000000)
   end
+
+  it "should generate a standard wallet" do
+    wallet = Axentro::Util.generate_standard_wallet
+    wallet.to_h.keys.should eq([:public_key, :wif, :address])
+  end
+
+  it "should generate an hd wallet" do
+    wallet = Axentro::Util.generate_hd_wallet
+    wallet.to_h.keys.should eq([:seed, :derivation, :public_key, :wif, :address])
+  end
+
+  it "should generate multiple master hd wallets" do
+    wallets = Axentro::Util.generate_multi_hd_wallets(2)
+    wallets.size.should eq(2)
+  end
+
+  it "should generate multiple hd derived wallets" do
+    wallets = Axentro::Util.generate_hd_wallets("3a133bb891f14aa755af119907bd20c7fcfd126fa187288cc2b9d626552f6802", 2, 2)
+    wallets.size.should eq(2)
+  end
+
 end

@@ -2,6 +2,7 @@ require "json"
 require "monocypher"
 require "big"
 require "crest"
+require "./crypto"
 
 module Axentro::Util
   SCALE_DECIMAL = 8
@@ -21,6 +22,68 @@ module Axentro::Util
     json_response["result"]["id"].as_s
   rescue e : Exception
     puts "Error sending transaction: #{e}"
+  end
+
+  def generate_standard_wallet
+    keys = KeyRing.generate
+
+    {
+      public_key: keys.public_key.as_hex,
+      wif:        keys.wif.as_hex,
+      address:    keys.address.as_hex,
+    }
+  end
+
+  def generate_hd_wallet
+    keys = KeyRing.generate_hd
+
+    {seed:       keys.seed,
+     derivation: "m/0'",
+     public_key: keys.public_key.as_hex,
+     wif:        keys.wif.as_hex,
+     address:    keys.address.as_hex,
+    }
+  end
+
+  def generate_multi_hd_wallets(amount)
+    wallets = (1..amount).to_a.map do
+      keys = KeyRing.generate_hd
+
+      {seed:       keys.seed,
+       derivation: "m/0'",
+       public_key: keys.public_key.as_hex,
+       wif:        keys.wif.as_hex,
+       address:    keys.address.as_hex,
+      }
+    end
+    {status: "success", result: {wallets: wallets}}
+  end
+
+  def generate_hd_wallets(seed, amount, derivation_start)
+    wallets = (0..(Math.max(1, amount - 1))).to_a.map do |n|
+      n = n + derivation_start
+      derivation = "m/#{n}'"
+      keys = KeyRing.generate_hd(seed, derivation)
+
+      {
+        derivation: derivation,
+        public_key: keys.public_key.as_hex,
+        wif:        keys.wif.as_hex,
+        address:    keys.address.as_hex,
+      }
+    end
+    {status: "success", result: {seed: seed, wallets: wallets}}
+  end
+
+  def wallet_from_wif(_wif)
+    wif = Wif.new(_wif)
+    public_key = wif.public_key
+    address = wif.address
+    {
+      public_key: public_key.as_hex,
+      wif:        wif.as_hex,
+      address:    address.as_hex,
+    }
   end
 
   def __create_signed_send_token_transaction(from_address : String, from_public_key : String, from_private_key : String, to_address : String, amount : String, fee : String = "0.0001", speed : String = "FAST")
@@ -79,4 +142,7 @@ module Axentro::Util
   def __scale_i64(value : String) : Int64
     BigDecimal.new(value).scale_to(BigDecimal.new(1, SCALE_DECIMAL)).value.to_i64
   end
+
+  include Axentro::Core
+  include Axentro::Core::Keys
 end
