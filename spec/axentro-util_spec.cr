@@ -42,5 +42,4 @@ describe Axentro::Util do
     wallets = Axentro::Util.generate_hd_wallets("3a133bb891f14aa755af119907bd20c7fcfd126fa187288cc2b9d626552f6802", 2, 2)
     wallets.size.should eq(2)
   end
-
 end
